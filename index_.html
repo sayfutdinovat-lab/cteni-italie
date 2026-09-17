@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cesta do Itálie</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap">
+<style>
+  :root{
+    --cream:#f5f0e8;
+    --card:#ffffff;
+    --dark:#2d1f24;
+    --pink:#e8457a;
+    --pink-soft:#fdf0f4;
+    --pink-border:#f3c3d3;
+    --muted:#888880;
+    --success:#2d8a60;
+    --success-soft:#e7f5ee;
+    --error:#c8465c;
+    --error-soft:#fbe9ec;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--cream);
+    color:var(--dark);
+    font-family:'Poppins',system-ui,-apple-system,sans-serif;
+    -webkit-user-select:none;
+    user-select:none;
+  }
+  .page{
+    max-width:760px;
+    margin:0 auto;
+    padding:28px 16px 60px;
+  }
+  .hero{
+    background:var(--dark);
+    color:#fff;
+    border-radius:20px;
+    padding:26px 22px;
+    text-align:center;
+    margin-bottom:28px;
+  }
+  .hero .eyebrow{
+    display:inline-block;
+    background:var(--pink);
+    color:#fff;
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    padding:5px 14px;
+    border-radius:999px;
+    margin-bottom:14px;
+  }
+  .hero h1{
+    font-size:clamp(24px,6vw,32px);
+    font-weight:800;
+    margin:0 0 8px;
+  }
+  .hero p{
+    font-size:14px;
+    color:#e9dfe2;
+    margin:0;
+    line-height:1.5;
+  }
+  .task{
+    background:var(--card);
+    border-radius:20px;
+    padding:22px 18px 26px;
+    margin-bottom:26px;
+    box-shadow:0 2px 14px rgba(45,31,36,0.06);
+    border:1px solid #eee3e7;
+  }
+  .task-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    background:var(--dark);
+    color:#fff;
+    font-weight:700;
+    font-size:13px;
+    letter-spacing:.03em;
+    padding:8px 16px;
+    border-radius:999px;
+    margin-bottom:16px;
+  }
+  .task-badge .pink-star{color:var(--pink);}
+  .instruction{
+    background:var(--pink-soft);
+    border-left:4px solid var(--pink);
+    border-radius:10px;
+    padding:12px 14px;
+    font-size:14px;
+    line-height:1.55;
+    margin-bottom:18px;
+  }
+  .reading{
+    background:var(--cream);
+    border-radius:14px;
+    padding:16px 16px;
+    font-size:14.5px;
+    line-height:1.7;
+    margin-bottom:18px;
+  }
+  .reading h3{margin:0 0 10px;font-size:16px;font-weight:700;}
+  .reading p{margin:0 0 10px;}
+  .reading p:last-child{margin-bottom:0;}
+  .offers{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin-bottom:18px;
+  }
+  @media (max-width:520px){ .offers{grid-template-columns:1fr;} }
+  .offer{
+    background:var(--cream);
+    border-radius:14px;
+    padding:14px;
+    font-size:13.5px;
+    line-height:1.55;
+  }
+  .offer strong{display:block;font-size:13.5px;margin-bottom:6px;color:var(--dark);}
+  .offer .letter{
+    display:inline-flex;
+    align-items:center;justify-content:center;
+    width:22px;height:22px;
+    background:var(--pink);
+    color:#fff;
+    font-weight:700;
+    font-size:12px;
+    border-radius:50%;
+    margin-right:7px;
+  }
+  .email-box{
+    background:#fff;
+    border:1px solid #e5dde0;
+    border-radius:14px;
+    overflow:hidden;
+    margin-bottom:18px;
+  }
+  .email-topbar{
+    background:#efe9ea;
+    padding:8px 14px;
+    font-size:12px;
+    color:var(--muted);
+    display:flex;
+    gap:10px;
+  }
+  .email-meta{
+    padding:10px 16px;
+    font-size:13px;
+    color:var(--muted);
+    border-bottom:1px solid #f0eaec;
+  }
+  .email-meta b{color:var(--dark);}
+  .email-body{
+    padding:14px 16px 16px;
+    font-size:14px;
+    line-height:1.65;
+  }
+  .email-body p{margin:0 0 10px;}
+  .email-body p:last-child{margin-bottom:0;}
+  .msg-label{
+    font-size:12px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    color:var(--pink);
+    margin-bottom:6px;
+  }
+  .two-col{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+    margin-bottom:18px;
+  }
+  @media (max-width:560px){ .two-col{grid-template-columns:1fr;} }
+  .q{
+    margin-bottom:16px;
+    padding-bottom:16px;
+    border-bottom:1px solid #f1ebed;
+  }
+  .q:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+  .q-text{
+    font-size:14.5px;
+    font-weight:600;
+    margin-bottom:10px;
+    line-height:1.45;
+  }
+  .q-num{color:var(--pink);margin-right:5px;}
+  .answers{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  .ans-btn{
+    font-family:inherit;
+    border:2px solid #e5dde0;
+    background:#fff;
+    color:var(--dark);
+    font-size:13.5px;
+    font-weight:600;
+    padding:8px 16px;
+    border-radius:10px;
+    cursor:pointer;
+    transition:all .15s ease;
+  }
+  .ans-btn:hover{border-color:var(--pink);}
+  .ans-btn:focus-visible{outline:2px solid var(--pink);outline-offset:2px;}
+  .ans-btn.selected{
+    background:var(--pink);
+    border-color:var(--pink);
+    color:#fff;
+  }
+  .ans-btn.correct{
+    background:var(--success);
+    border-color:var(--success);
+    color:#fff;
+  }
+  .ans-btn.incorrect{
+    background:var(--error);
+    border-color:var(--error);
+    color:#fff;
+  }
+  .ans-btn.reveal{
+    border-color:var(--success);
+    color:var(--success);
+    background:#fff;
+  }
+  .ans-btn[disabled]{cursor:default;}
+  .explain{
+    display:none;
+    margin-top:10px;
+    background:var(--error-soft);
+    border-left:4px solid var(--error);
+    border-radius:8px;
+    padding:10px 12px;
+    font-size:13px;
+    line-height:1.5;
+    color:#5a2430;
+  }
+  .explain.show{display:block;}
+  .explain b{color:var(--error);}
+  .check-row{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    flex-wrap:wrap;
+    margin-top:6px;
+  }
+  .check-btn{
+    font-family:inherit;
+    background:var(--pink);
+    color:#fff;
+    border:none;
+    font-size:14px;
+    font-weight:700;
+    padding:11px 22px;
+    border-radius:999px;
+    cursor:pointer;
+  }
+  .check-btn:hover{background:#d63868;}
+  .check-btn[disabled]{background:#e3b8c6;cursor:default;}
+  .hint-msg{
+    font-size:13px;
+    color:var(--muted);
+  }
+  .score{
+    display:none;
+    font-weight:700;
+    font-size:14px;
+    padding:8px 16px;
+    border-radius:999px;
+  }
+  .score.show{display:inline-block;}
+  .score.good{background:var(--success-soft);color:var(--success);}
+  .score.bad{background:var(--error-soft);color:var(--error);}
+  .credit{
+    text-align:center;
+    font-size:12.5px;
+    color:var(--muted);
+    margin-top:4px;
+  }
+  .footer-note{
+    text-align:center;
+    font-size:12.5px;
+    color:var(--muted);
+    line-height:1.6;
+    margin-top:8px;
+    padding:0 10px;
+  }
+  .watermark{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:0;
+    opacity:.05;
+    overflow:hidden;
+  }
+  .watermark span{
+    position:absolute;
+    white-space:nowrap;
+    font-size:13px;
+    font-weight:700;
+    color:var(--dark);
+    transform:rotate(-28deg);
+  }
+  .content{position:relative;z-index:1;}
+</style>
+</head>
+<body>
+
+<div class="watermark" id="watermark"></div>
+
+<div class="page content">
+
+  <div class="hero">
+    <span class="eyebrow">✦ Čtení — nová varianta</span>
+    <h1>Cesta do Itálie</h1>
+    <p>Přečtěte si každou část a odpovězte na otázky. Po dokončení klikněte na „Zkontrolovat odpovědi“ — hned uvidíte výsledek a u chyb i vysvětlení.</p>
+  </div>
+
+  <!-- TASK 1 -->
+  <div class="task" id="task1">
+    <div class="task-badge"><span class="pink-star">✦</span> ČTENÍ, ÚLOHA Č. 1</div>
+    <div class="instruction">Přečtěte si text. Potom rozhodněte, jestli jsou tvrzení 1–7 pravda (ANO), nebo nepravda (NE).</div>
+    <div class="reading">
+      <h3>🌍 Cesta do Itálie</h3>
+      <p>Minulý měsíc jsme s manželem strávili pět dní v Itálii. Nejdřív jsme chtěli letět přímo z Prahy do Říma, ale levnější letenky jsme našli z Vídně. Do Vídně jsme proto jeli autem už v neděli večer, přespali jsme tam u kamarádů a v pondělí ráno pokračovali letadlem do Říma.</p>
+      <p>V Římě jsme měli zůstat tři noci, ale po příletu nám hotel oznámil, že poslední noc pro nás nemá pokoj. Nabídl nám jiný hotel, ale byl daleko od centra. Rozhodli jsme se proto zůstat v našem hotelu jen dvě noci a už ve středu odpoledne jsme jeli vlakem do Florencie. Původně jsme tam měli přijet až ve čtvrtek.</p>
+      <p>Ve Florencii jsme si chtěli půjčit auto, protože jsme plánovali jednodenní výlet do malého města v horách. Ve středu ale celý večer silně pršelo a předpověď na čtvrtek nebyla lepší. Auto jsme si proto nepůjčili. Místo výletu jsme navštívili dvě muzea a odpoledne, když přestalo pršet, jsme se prošli po centru.</p>
+      <p>V pátek jsme se měli vrátit vlakem do Říma a večer letět zpátky do Vídně. Ráno nám ale přišla zpráva, že vlak má velké zpoždění. Nechtěli jsme riskovat, že nestihneme letadlo, a proto jsme si koupili autobusové jízdenky. Autobus přijel do Říma včas a večerní let jsme bez problémů stihli. Auto jsme nechali ve Vídni, takže jsme se z letiště domů vrátili stejně jako na začátku cesty.</p>
+    </div>
+
+    <div id="t1-questions">
+      <div class="q" data-correct="NE">
+        <div class="q-text"><span class="q-num">1.</span>Manželé začali cestu do Itálie letem z Prahy.</div>
+        <div class="answers">
+          <button class="ans-btn" data-val="ANO">ANO</button>
+          <button class="ans-btn" data-val="NE">NE</button>
+        </div>
+        <div class="explain">✗ Správně: <b>NE</b> — do Vídně jeli autem a teprve odtud letěli.</div>
+      </div>
+      <div class="q" data-correct="ANO">
+        <div class="q-text"><span class="q-num">2.</span>Ve Vídni strávili noc ještě před cestou do Itálie.</div>
+        <div class="answers">
+          <button class="ans-btn" data-val="ANO">ANO</button>
+          <button class="ans-btn" data-val="NE">NE</button>
+        </div>
+        <div class="explain">✗ Správně: <b>ANO</b> — přijeli v neděli večer, letěli až v pondělí ráno.</div>
+      </div>
+      <div class="q" data-correct="ANO">
+        <div class="q-text"><span class="q-num">3.</span>Z Říma odjeli dříve, než původně plánovali.</div>
+        <div class="answers">
+          <button class="ans-btn" data-val="ANO">ANO</button>
+          <button class="ans-btn" data-val="NE">NE</button>
+        </div>
+        <div class="explain">✗ Správně: <b>ANO</b> — původně měli odjet ve čtvrtek, odjeli už ve středu.</div>
+      </div>
+      <div class="q" data-correct="NE">
+        <div class="q-text"><span class="q-num">4.</span>Hotel v Římě jim zajistil poslední noc v jiném hotelu.</div>
+        <div class="answers">
+          <button class="ans-btn" data-val="ANO">ANO</button>
+          <button class="ans-btn" data-val="NE">NE</button>
+        </div>
+        <div class="explain">✗ Správně: <b>NE</b> — hotel jim jiný hotel pouze nabídl; oni nabídku nevyužili.</div>
+      </div>
+      <div class="q" data-correct="ANO">
+        <div class="q-text"><span class="q-num">5.</span>Ve Florencii změnili svůj program kvůli počasí.</div>
+        <div class="answers">
+          <button class="ans-btn" data-val="ANO">ANO</button>
+          <button class="ans-btn" data-val="NE">NE</button>
+        </div>
+        <div class="explain">✗ Správně: <b>ANO</b> — kvůli dešti nejeli autem na plánovaný výlet.</div>
+      </div>
+      <div class="q" data-correct="ANO">
+        <div class="q-text"><span class="q-num">6.</span>V pátek použili jiný dopravní prostředek, než původně plánovali.</div>
+        <div class="answers">
+          <button class="ans-btn" data-val="ANO">ANO</button>
+          <button class="ans-btn" data-val="NE">NE</button>
+        </div>
+        <div class="explain">✗ Správně: <b>ANO</b> — měli jet vlakem, nakonec jeli autobusem.</div>
+      </div>
+      <div class="q" data-correct="NE">
+        <div class="q-text"><span class="q-num">7.</span>Z Vídně domů cestovali jinak než na začátku své cesty.</div>
+        <div class="answers">
+          <button class="ans-btn" data-val="ANO">ANO</button>
+          <button class="ans-btn" data-val="NE">NE</button>
+        </div>
+        <div class="explain">✗ Správně: <b>NE</b> — auto měli ve Vídni, takže domů pokračovali autem stejně jako při cestě do Vídně.</div>
+      </div>
+    </div>
+
+    <div class="check-row">
+      <button class="check-btn" data-task="t1-questions">Zkontrolovat odpovědi</button>
+      <span class="hint-msg" data-hint="t1-questions"></span>
+      <span class="score" data-score="t1-questions"></span>
+    </div>
+  </div>
+
+  <!-- TASK 2 -->
+  <div class="task" id="task2">
+    <div class="task-badge"><span class="pink-star">✦</span> ČTENÍ, ÚLOHA Č. 2</div>
+    <div class="instruction">Přečtěte si nabídky A–D a otázky 8–13. Vyberte vždy jednu správnou nabídku.</div>
+
+    <div class="offers">
+      <div class="offer"><strong><span class="letter">A</span>Prodloužený víkend v Polsku</strong>Odjezd autobusem z Prahy v pátek v 15:30, návrat v pondělí večer. Cena zahrnuje dopravu, tři noci v hotelu a snídaně. V sobotu dopoledne navštívíme Krakov s českým průvodcem, odpoledne máte vlastní program. V neděli pojedeme společně do solného dolu. Vstupenku do dolu si každý platí sám.</div>
+      <div class="offer"><strong><span class="letter">B</span>Léto ve Slovinsku</strong>Pět nocí u jezera Bled. Do Slovinska přijedete vlastní dopravou. U hotelu můžete zdarma zaparkovat. V ceně jsou snídaně a tři večeře. Program si organizujete sami, ale na recepci si můžete objednat výlet do hor s průvodcem. Za výlet se platí zvlášť.</div>
+      <div class="offer"><strong><span class="letter">C</span>Rakousko na kole</strong>Třídenní sportovní výlet podél Dunaje. Z Brna pojedeme společně vlakem, vlastní kola vezeme s sebou. Cena zahrnuje vlak, dvě noci v hotelu a večeře. Snídaně si platíte sami. Každý den jedeme přibližně 45 km, proto výlet doporučujeme lidem, kteří už pravidelně jezdí na kole.</div>
+      <div class="offer"><strong><span class="letter">D</span>Víkend v Německu</strong>V sobotu ráno pojedeme vlakem z Prahy do Drážďan. Po příjezdu nás čeká společná prohlídka města, večer máte volno. V neděli dopoledne můžete navštívit muzeum nebo nakupovat. Zpět do Prahy odjíždíme po obědě. Doprava, hotel a snídaně jsou v ceně. Vstupy a ostatní jídlo si platíte sami.</div>
+    </div>
+
+    <div id="t2-questions">
+      <div class="q" data-correct="A">
+        <div class="q-text"><span class="q-num">8.</span>Chcete mít zajištěnou cestu i ubytování a jeden celý den organizovaný program. Kam pojedete?</div>
+        <div class="answers">
+          <button class="ans-btn" data-val="A">A</button><button class="ans-btn" data-val="B">B</button><button class="ans-btn" data-val="C">C</button><button class="ans-btn" data-val="D">D</button>
+        </div>
+        <div class="explain">✗ Správně: <b>A</b> — Polsko má dopravu i hotel v ceně a v neděli je celý den společný program (solný důl).</div>
+      </div>
+      <div class="q" data-correct="B">
+        <div class="q-text"><span class="q-num">9.</span>Chcete jet autem a během pobytu nechcete mít žádný povinný společný program. Kam pojedete?</div>
+        <div class="answers">
+          <button class="ans-btn" data-val="A">A</button><button class="ans-btn" data-val="B">B</button><button class="ans-btn" data-val="C">C</button><button class="ans-btn" data-val="D">D</button>
+        </div>
+        <div class="explain">✗ Správně: <b>B</b> — do Slovinska přijedete vlastní dopravou a program si organizujete sami.</div>
+      </div>
+      <div class="q" data-correct="C">
+        <div class="q-text"><span class="q-num">10.</span>Chcete cestovat z Moravy a nevadí Vám, že ráno budete jíst za vlastní peníze. Kam pojedete?</div>
+        <div class="answers">
+          <button class="ans-btn" data-val="A">A</button><button class="ans-btn" data-val="B">B</button><button class="ans-btn" data-val="C">C</button><button class="ans-btn" data-val="D">D</button>
+        </div>
+        <div class="explain">✗ Správně: <b>C</b> — výlet do Rakouska jede z Brna a snídaně si platíte sami.</div>
+      </div>
+      <div class="q" data-correct="B">
+        <div class="q-text"><span class="q-num">11.</span>Chcete mít některá jídla v ceně, ale dopravu si chcete zařídit sami. Kam pojedete?</div>
+        <div class="answers">
+          <button class="ans-btn" data-val="A">A</button><button class="ans-btn" data-val="B">B</button><button class="ans-btn" data-val="C">C</button><button class="ans-btn" data-val="D">D</button>
+        </div>
+        <div class="explain">✗ Správně: <b>B</b> — snídaně a tři večeře jsou v ceně, ale do Slovinska přijedete vlastní dopravou.</div>
+      </div>
+      <div class="q" data-correct="A">
+        <div class="q-text"><span class="q-num">12.</span>Chcete mít část dne s průvodcem a potom čas jen pro sebe. Odjíždíte v pátek. Kam pojedete?</div>
+        <div class="answers">
+          <button class="ans-btn" data-val="A">A</button><button class="ans-btn" data-val="B">B</button><button class="ans-btn" data-val="C">C</button><button class="ans-btn" data-val="D">D</button>
+        </div>
+        <div class="explain">✗ Správně: <b>A</b> — odjezd do Polska je v pátek, sobotní dopoledne je s průvodcem, odpoledne máte volno.</div>
+      </div>
+      <div class="q" data-correct="D">
+        <div class="q-text"><span class="q-num">13.</span>Chcete jet na dva dny a nechcete cestovat autobusem. Kam pojedete?</div>
+        <div class="answers">
+          <button class="ans-btn" data-val="A">A</button><button class="ans-btn" data-val="B">B</button><button class="ans-btn" data-val="C">C</button><button class="ans-btn" data-val="D">D</button>
+        </div>
+        <div class="explain">✗ Správně: <b>D</b> — víkend v Německu trvá dva dny (sobota–neděle) a jede se vlakem, ne autobusem.</div>
+      </div>
+    </div>
+
+    <div class="check-row">
+      <button class="check-btn" data-task="t2-questions">Zkontrolovat odpovědi</button>
+      <span class="hint-msg" data-hint="t2-questions"></span>
+      <span class="score" data-score="t2-questions"></span>
+    </div>
+  </div>
+
+  <!-- TASK 3 -->
+  <div class="task" id="task3">
+    <div class="task-badge"><span class="pink-star">✦</span> ČTENÍ, ÚLOHA Č. 3</div>
+    <div class="instruction">Přečtěte si e-mail a vyberte správnou odpověď A–C.</div>
+
+    <div class="email-box">
+      <div class="email-topbar">✉️ Nová zpráva</div>
+      <div class="email-meta"><b>Komu:</b> Martina &nbsp;·&nbsp; <b>Předmět:</b> Tak zase změna 😅</div>
+      <div class="email-body">
+        <p>Ahoj Martino,<br>už máme skoro všechno připravené na naši dovolenou. Jak víš, původně jsme chtěli strávit celý týden v Chorvatsku. Potom ale Pavel našel levné letenky do Splitu, a tak jsme změnili dopravu. Místo cesty autem poletíme z Prahy.</p>
+        <p>První čtyři noci budeme ve Splitu. Hotel je trochu dál od pláže, ale přímo před ním staví autobus do centra. Auto si tam půjčovat nebudeme. Chtěli jsme jet jeden den lodí na ostrov, ale tento výlet jsme zatím nekoupili. Rozhodneme se až podle počasí.</p>
+        <p>V pátek ráno si půjčíme auto a pojedeme na dvě noci do Bosny. Pavel tam chtěl původně jet autobusem, protože je to levnější, ale já bych chtěla navštívit několik menších míst, kam autobus nejezdí.</p>
+        <p>V neděli odpoledne se autem vrátíme do Splitu. Letadlo do Prahy nám letí až v pondělí ráno, takže poslední noc budeme spát v malém hotelu blízko letiště. Náš první hotel ve Splitu byl volný i na neděli, ale cesta na letiště by ráno trvala skoro hodinu.</p>
+        <p>Teď už snad nic nezměníme!<br>Měj se,<br>Alena</p>
+      </div>
+    </div>
+
+    <div id="t3-questions">
+      <div class="q" data-correct="B">
+        <div class="q-text"><span class="q-num">14.</span>Co Alena a Pavel změnili jako první?</div>
+        <div class="answers">
+          <button class="ans-btn" data-val="A">A) zemi, kam pojedou</button>
+          <button class="ans-btn" data-val="B">B) způsob cesty do Chorvatska</button>
+          <button class="ans-btn" data-val="C">C) počet dní dovolené</button>
+        </div>
+        <div class="explain">✗ Správně: <b>B</b> — kvůli levným letenkám změnili dopravu z auta na letadlo, cíl (Chorvatsko/Split) zůstal stejný.</div>
+      </div>
+      <div class="q" data-correct="B">
+        <div class="q-text"><span class="q-num">15.</span>Co během pobytu ve Splitu zatím není jisté?</div>
+        <div class="answers">
+          <button class="ans-btn" data-val="A">A) cesta do centra</button>
+          <button class="ans-btn" data-val="B">B) výlet na ostrov</button>
+          <button class="ans-btn" data-val="C">C) cesta do Bosny</button>
+        </div>
+        <div class="explain">✗ Správně: <b>B</b> — výlet lodí na ostrov ještě nekoupili, rozhodnou se podle počasí.</div>
+      </div>
+      <div class="q" data-correct="A">
+        <div class="q-text"><span class="q-num">16.</span>Proč pojedou do Bosny autem?</div>
+        <div class="answers">
+          <button class="ans-btn" data-val="A">A) Chtějí navštívit místa, kam se špatně dostává autobusem.</button>
+          <button class="ans-btn" data-val="B">B) Cesta autem je levnější než autobusem.</button>
+          <button class="ans-btn" data-val="C">C) Potřebují se autem vrátit až do Prahy.</button>
+        </div>
+        <div class="explain">✗ Správně: <b>A</b> — Alena chce navštívit menší místa, kam autobus nejezdí (autobus by naopak byl levnější variantou).</div>
+      </div>
+      <div class="q" data-correct="C">
+        <div class="q-text"><span class="q-num">17.</span>Kde budou spát poslední noc?</div>
+        <div class="answers">
+          <button class="ans-btn" data-val="A">A) v Bosně</button>
+          <button class="ans-btn" data-val="B">B) v prvním hotelu ve Splitu</button>
+          <button class="ans-btn" data-val="C">C) blízko letiště</button>
+        </div>
+        <div class="explain">✗ Správně: <b>C</b> — poslední noc přespí v malém hotelu blízko letiště.</div>
+      </div>
+      <div class="q" data-correct="B">
+        <div class="q-text"><span class="q-num">18.</span>Proč změnili hotel na poslední noc?</div>
+        <div class="answers">
+          <button class="ans-btn" data-val="A">A) První hotel už neměl volný pokoj.</button>
+          <button class="ans-btn" data-val="B">B) Chtějí být ráno blíž k místu odletu.</button>
+          <button class="ans-btn" data-val="C">C) Poslední noc chtějí bydlet mimo Split.</button>
+        </div>
+        <div class="explain">✗ Správně: <b>B</b> — první hotel byl volný i na neděli, ale cesta na letiště by ráno trvala skoro hodinu, proto chtějí být blíž letišti.</div>
+      </div>
+    </div>
+
+    <div class="check-row">
+      <button class="check-btn" data-task="t3-questions">Zkontrolovat odpovědi</button>
+      <span class="hint-msg" data-hint="t3-questions"></span>
+      <span class="score" data-score="t3-questions"></span>
+    </div>
+  </div>
+
+  <!-- TASK 4 -->
+  <div class="task" id="task4">
+    <div class="task-badge"><span class="pink-star">✦</span> ČTENÍ, ÚLOHA Č. 4</div>
+    <div class="instruction">Přečtěte si informace od hotelu a zprávu od Daniela. Potom vyberte správnou odpověď A–C.</div>
+
+    <div class="two-col">
+      <div class="reading" style="margin-bottom:0;">
+        <div class="msg-label">🏨 Zpráva z hotelu</div>
+        <p>Vážení hosté,<br>z důvodu opravy nebude v sobotu a v neděli fungovat hotelový bazén. Místo něj můžete zdarma využít bazén ve sportovním centru, které je deset minut pěšky od hotelu.</p>
+        <p>Snídaně bude jako obvykle od 7:00 do 10:00. Hotelová restaurace bude ale v sobotu večer zavřená. Restaurace bude znovu otevřená v neděli od 12:00.</p>
+        <p>Hosté, kteří mají v ceně pobytu sobotní večeři, mohou místo ní dostat oběd v neděli. Informujte prosím recepci nejpozději v sobotu dopoledne.</p>
+      </div>
+      <div class="reading" style="margin-bottom:0;">
+        <div class="msg-label">📱 Zpráva od Daniela</div>
+        <p>Ahoj Sáro,<br>přišel mi e-mail z hotelu. Škoda toho bazénu, ale do sportovního centra se mi chodit nechce. V sobotu stejně chceme být celý den ve městě.</p>
+        <p>Máme zaplacenou i sobotní večeři. V neděli ale odjíždíme už v jedenáct, takže jejich nabídku na oběd nemůžeme využít. Volal jsem na recepci a domluvil jsem se, že nám místo večeře připraví něco s sebou na cestu.</p>
+        <p>Snídaně se naštěstí nemění. V neděli bych chtěl vstát trochu dřív, abychom se před odjezdem ještě stihli projít.<br>Daniel</p>
+      </div>
+    </div>
+
+    <div id="t4-questions">
+      <div class="q" data-correct="B">
+        <div class="q-text"><span class="q-num">19.</span>Kterou hotelovou službu Daniel a Sára o víkendu nevyužijí?</div>
+        <div class="answers">
+          <button class="ans-btn" data-val="A">A) snídani</button>
+          <button class="ans-btn" data-val="B">B) bazén</button>
+          <button class="ans-btn" data-val="C">C) recepci</button>
+        </div>
+        <div class="explain">✗ Správně: <b>B</b> — Danielovi se nechce chodit do náhradního sportovního centra, takže bazén nevyužijí.</div>
+      </div>
+      <div class="q" data-correct="A">
+        <div class="q-text"><span class="q-num">20.</span>Proč nemohou přijmout původní náhradní nabídku hotelu?</div>
+        <div class="answers">
+          <button class="ans-btn" data-val="A">A) V neděli už v době oběda nebudou v hotelu.</button>
+          <button class="ans-btn" data-val="B">B) Za nedělní oběd by museli zaplatit.</button>
+          <button class="ans-btn" data-val="C">C) Restaurace bude v neděli zavřená.</button>
+        </div>
+        <div class="explain">✗ Správně: <b>A</b> — odjíždějí už v 11:00, takže na oběd (restaurace otevírá až od 12:00) nebudou v hotelu.</div>
+      </div>
+      <div class="q" data-correct="B">
+        <div class="q-text"><span class="q-num">21.</span>Jak hotel nakonec vyřešil jejich sobotní večeři?</div>
+        <div class="answers">
+          <button class="ans-btn" data-val="A">A) Dostanou ji dříve během dne.</button>
+          <button class="ans-btn" data-val="B">B) Dostanou jídlo, které si vezmou s sebou.</button>
+          <button class="ans-btn" data-val="C">C) Dostanou peníze zpět.</button>
+        </div>
+        <div class="explain">✗ Správně: <b>B</b> — recepce jim místo večeře připraví jídlo s sebou na cestu.</div>
+      </div>
+    </div>
+
+    <div class="check-row">
+      <button class="check-btn" data-task="t4-questions">Zkontrolovat odpovědi</button>
+      <span class="hint-msg" data-hint="t4-questions"></span>
+      <span class="score" data-score="t4-questions"></span>
+    </div>
+  </div>
+
+  <div class="credit">@tatiana.sayfutdinova</div>
+  <div class="footer-note">Tento materiál je určen pouze pro klienty Taťány Sajfutdinovové. Prosíme, nesdílejte ho dál mimo naši skupinu. Děkujeme za pochopení. 🙏🏼</div>
+
+</div>
+
+<script>
+(function(){
+  // watermark
+  var wm = document.getElementById('watermark');
+  var text = 'POUZE PRO NAŠI SKUPINU · ';
+  var full = text.repeat(6);
+  for (var r = 0; r < 7; r++){
+    var s = document.createElement('span');
+    s.textContent = full;
+    s.style.top = (r * 15 - 5) + '%';
+    s.style.left = '-20%';
+    wm.appendChild(s);
+  }
+
+  // basic copy friction
+  document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
+  document.addEventListener('copy', function(e){ e.preventDefault(); });
+  document.addEventListener('cut', function(e){ e.preventDefault(); });
+
+  // answer selection
+  document.querySelectorAll('.q').forEach(function(q){
+    var btns = q.querySelectorAll('.ans-btn');
+    btns.forEach(function(b){
+      b.addEventListener('click', function(){
+        if (b.disabled) return;
+        btns.forEach(function(x){ x.classList.remove('selected'); });
+        b.classList.add('selected');
+        q.dataset.selected = b.dataset.val;
+      });
+    });
+  });
+
+  // check buttons
+  document.querySelectorAll('.check-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var containerId = btn.dataset.task;
+      var container = document.getElementById(containerId);
+      var qs = container.querySelectorAll('.q');
+      var hint = document.querySelector('[data-hint="' + containerId + '"]');
+      var scoreEl = document.querySelector('[data-score="' + containerId + '"]');
+
+      var unanswered = 0;
+      qs.forEach(function(q){ if (!q.dataset.selected) unanswered++; });
+      if (unanswered > 0){
+        hint.textContent = 'Zodpovězte prosím ještě ' + unanswered + (unanswered === 1 ? ' otázku.' : ' otázky/otázek.');
+        return;
+      }
+      hint.textContent = '';
+
+      var correctCount = 0;
+      qs.forEach(function(q){
+        var correct = q.dataset.correct;
+        var selected = q.dataset.selected;
+        var btns = q.querySelectorAll('.ans-btn');
+        var explain = q.querySelector('.explain');
+        btns.forEach(function(b){
+          b.disabled = true;
+          b.classList.remove('selected');
+          if (b.dataset.val === selected && selected === correct){
+            b.classList.add('correct');
+          } else if (b.dataset.val === selected && selected !== correct){
+            b.classList.add('incorrect');
+          } else if (b.dataset.val === correct){
+            b.classList.add('reveal');
+          }
+        });
+        if (selected === correct){
+          correctCount++;
+        } else if (explain){
+          explain.classList.add('show');
+        }
+      });
+
+      scoreEl.textContent = 'Výsledek: ' + correctCount + ' / ' + qs.length;
+      scoreEl.classList.add('show');
+      scoreEl.classList.add(correctCount === qs.length ? 'good' : 'bad');
+      btn.disabled = true;
+    });
+  });
+})();
+</script>
+</body>
+</html>
